@@ -11,37 +11,37 @@ import p6 from "@/assets/project-6.jfif";
 
 const projects = [
   {
-    img: p1.url,
+    img: p1,
     title: "Vertex Job Portal",
     desc: "Dual-role hiring platform with applicant tracking, instant apply, and an admin review console.",
     stack: ["React", "Supabase", "Auth"],
   },
   {
-    img: p2.url,
+    img: p2,
     title: "Noodle of Doom",
     desc: "Retro terminal-style arcade snake with dynamic speed scaling and a live scoreboard HUD.",
     stack: ["Canvas", "TypeScript", "Game Loop"],
   },
   {
-    img: p3.url,
+    img: p3,
     title: "Social Network Analyzer",
     desc: "Graph engine that maps friendships, mutual connections, and people-you-may-know suggestions.",
     stack: ["Python", "Graphs", "Tkinter"],
   },
   {
-    img: p4.url,
+    img: p4,
     title: "Library Management System",
     desc: "Campus-scale catalog with issue/return cycles, fine tracking, and role-based access.",
     stack: ["Python", "SQL", "Desktop"],
   },
   {
-    img: p5.url,
+    img: p5,
     title: "Voice AI Ordering Agent",
     desc: "Realtime voice agent that takes restaurant orders, recommends items, and syncs a live menu.",
     stack: ["Realtime API", "LLM", "WebRTC"],
   },
   {
-    img: p6.url,
+    img: p6,
     title: "Code Claw Machine",
     desc: "Cardboard arcade claw driven by Arduino servos and a Python control loop over serial.",
     stack: ["Arduino", "Python", "Hardware"],

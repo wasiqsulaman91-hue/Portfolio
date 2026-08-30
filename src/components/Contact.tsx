@@ -3,10 +3,12 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { GithubLogo, LinkedinLogo, PaperPlaneTilt } from "@phosphor-icons/react";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
 
 export function Contact() {
   const btn = useRef<HTMLButtonElement>(null);
   const [form, setForm] = useState({ name: "", email: "", message: "" });
+  const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
@@ -32,15 +34,43 @@ export function Contact() {
     return () => ctx.revert();
   }, []);
 
-  const onSubmit = (e: React.FormEvent) => {
+  const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (submitting) return;
+    setSubmitting(true);
+
     gsap.fromTo(
       btn.current,
       { scale: 1 },
       { scale: 1.08, duration: 0.18, yoyo: true, repeat: 1, ease: "power2.out" },
     );
-    toast.success("Message sent — I'll get back to you soon.");
-    setForm({ name: "", email: "", message: "" });
+
+    try {
+      // 1. Persist the message in the database.
+      const { error: insertError } = await supabase.from("contact_messages").insert({
+        name: form.name,
+        email: form.email,
+        message: form.message,
+      });
+
+      if (insertError) throw insertError;
+
+      // 2. Ask the Edge Function to email the notification.
+      //    Even if this fails, the message is already saved above,
+      //    so it isn't lost — it just won't trigger an email.
+      const { error: fnError } = await supabase.functions.invoke("send-contact-email", {
+        body: form,
+      });
+      if (fnError) console.error("Email notification failed:", fnError);
+
+      toast.success("Message sent — I'll get back to you soon.");
+      setForm({ name: "", email: "", message: "" });
+    } catch (err) {
+      console.error("Contact form submission failed:", err);
+      toast.error("Something went wrong sending your message. Please try again.");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const field =
@@ -128,9 +158,10 @@ export function Contact() {
           <button
             ref={btn}
             type="submit"
-            className="contact-submit pulse-glow mt-2 inline-flex items-center justify-center gap-2 rounded-2xl violet-fill px-6 py-4 text-sm font-semibold tracking-wide text-primary-foreground transition-transform duration-300 hover:scale-[1.02]"
+            disabled={submitting}
+            className="contact-submit pulse-glow mt-2 inline-flex items-center justify-center gap-2 rounded-2xl violet-fill px-6 py-4 text-sm font-semibold tracking-wide text-primary-foreground transition-transform duration-300 hover:scale-[1.02] disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:scale-100"
           >
-            Send message
+            {submitting ? "Sending..." : "Send message"}
             <PaperPlaneTilt size={18} weight="light" />
           </button>
         </form>
