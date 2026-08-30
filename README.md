@@ -1,104 +1,142 @@
-# Wasiq's Portfolio
+# Wasiq — Portfolio Website
 
-A personal portfolio website built to showcase my projects, experience, and skills as a Computer Engineering student.
+Personal portfolio site for Wasiq, a Computer Engineering student and Agentic AI Engineer. Built as a single-page, section-based site with smooth scroll animations, a 3D hero background, and a working contact form backed by Supabase + Resend.
 
-🔗 **Live site:** _add your deployed URL here_
+---
 
-## Built With
+## Tech Stack
 
-- **[TanStack Start](https://tanstack.com/start)** — full-stack React framework
-- **[TanStack Router](https://tanstack.com/router)** — type-safe file-based routing
-- **React 19** + **TypeScript**
-- **Tailwind CSS v4**
-- **Radix UI** — accessible headless component primitives
-- **GSAP** — scroll-triggered animations
-- **Supabase** — backend/auth integration
-- **Vite** — dev server & build tool
+| Layer | Technology |
+|---|---|
+| Framework | React 19 + TanStack Start / TanStack Router |
+| Build tool | Vite |
+| Styling | Tailwind CSS v4 |
+| Animation | GSAP (+ ScrollTrigger), Locomotive Scroll |
+| Icons | Phosphor Icons, Lucide |
+| 3D background | Spline (embedded via iframe) |
+| UI primitives | Radix UI + shadcn-style components (`src/components/ui`) |
+| Backend / DB | Supabase (Postgres + Edge Functions) |
+| Email delivery | Resend |
+| Notifications (toasts) | Sonner |
+| Language | TypeScript |
 
-## Sections
-
-- **Hero** — introduction
-- **About** — skills overview
-- **Experience** — work history and certifications
-- **Projects** — a showcase of six builds, including:
-  - Vertex Job Portal
-  - Noodle of Doom (arcade snake game)
-  - Social Network Analyzer
-  - Library Management System
-  - Voice AI Ordering Agent
-  - Code Claw Machine
-- **Contact** — get in touch form
-
-## Getting Started
-
-### Prerequisites
-
-- [Node.js](https://nodejs.org/) (LTS recommended) or [Bun](https://bun.sh/)
-
-### Installation
-
-```bash
-# Clone the repository
-git clone <this-repository-url>
-cd Portfolio
-
-# Install dependencies
-bun install
-# or
-npm install
-```
-
-### Environment Variables
-
-Create a `.env` file in the root directory with your Supabase credentials:
-
-```
-SUPABASE_PROJECT_ID=your_project_id
-SUPABASE_PUBLISHABLE_KEY=your_publishable_key
-SUPABASE_URL=your_supabase_url
-VITE_SUPABASE_PROJECT_ID=your_project_id
-VITE_SUPABASE_PUBLISHABLE_KEY=your_publishable_key
-VITE_SUPABASE_URL=your_supabase_url
-```
-
-### Running Locally
-
-```bash
-bun dev
-# or
-npm run dev
-```
-
-The app will be available at `http://localhost:8080`.
-
-### Build for Production
-
-```bash
-bun run build
-# or
-npm run build
-```
+---
 
 ## Project Structure
 
 ```
-src/
-├── components/       # Page sections (Hero, About, Experience, Projects, Contact, Nav, Footer)
-├── assets/           # Images, PDFs, and other static files
-├── integrations/     # Supabase client & auth setup
-├── lib/              # Utility functions
-├── routes/           # TanStack Router route files
-└── styles.css        # Global styles
+Portfolio/
+├── src/
+│   ├── components/
+│   │   ├── Hero.tsx          # Landing section with Spline 3D orb background
+│   │   ├── About.tsx         # About section
+│   │   ├── Experience.tsx    # Experience/timeline section
+│   │   ├── Projects.tsx      # Horizontally scrolling project cards
+│   │   ├── Contact.tsx       # Contact form (Supabase + email trigger)
+│   │   ├── Nav.tsx           # Top navigation bar
+│   │   ├── Footer.tsx        # Footer with social links
+│   │   ├── Preloader.tsx     # Initial page load animation
+│   │   └── ui/                # Reusable UI primitives (buttons, dialogs, etc.)
+│   ├── integrations/
+│   │   └── supabase/
+│   │       ├── client.ts      # Supabase client (browser)
+│   │       ├── client.server.ts
+│   │       └── types.ts       # Generated + manually extended DB types
+│   ├── routes/                # TanStack Router route definitions
+│   ├── assets/                 # Images, PDFs, logos, project screenshots
+│   ├── hooks/
+│   └── lib/
+├── supabase/
+│   ├── config.toml
+│   ├── migrations/
+│   │   └── 20260830000000_create_contact_messages.sql
+│   └── functions/
+│       └── send-contact-email/
+│           └── index.ts       # Edge Function: emails Wasiq via Resend
+├── package.json
+└── vite.config.ts
 ```
 
-## Author
+---
 
-**Wasiq**
-Computer Engineering Student, COMSATS University Islamabad, Lahore Campus
+## Features
 
-- GitHub: [@wasiqsulaman91-hue](https://github.com/wasiqsulaman91-hue)
-- LinkedIn: [wasiqsulaman](https://www.linkedin.com/in/wasiqsulaman)
+- **Animated hero section** with a Spline-rendered 3D orb as a background layer, plus a decorative grid/starfield/glow-orb atmosphere on top.
+- **Scroll-triggered animations** throughout (GSAP + ScrollTrigger) for section reveals and project cards.
+- **Horizontally scrolling project rail** showcasing six projects with stack tags.
+- **Working contact form**:
+  1. Visitor submits name/email/message.
+  2. Message is saved to a `contact_messages` table in Supabase (Postgres), protected by Row Level Security (visitors can insert, but not read others' messages).
+  3. A Supabase Edge Function is invoked in parallel, which calls the Resend API to email the submission to Wasiq's inbox.
+- **Responsive design** across mobile/tablet/desktop using Tailwind.
 
-## License
+---
 
-This project is open source. Feel free to explore the code, but please don't copy the content/design directly for your own portfolio.
+## Getting Started
+
+### Prerequisites
+- Node.js (LTS recommended)
+- npm (or a compatible package manager)
+- A Supabase project (for the contact form to work)
+- A Resend account + API key (for email notifications)
+
+### Install dependencies
+```bash
+npm install
+```
+
+### Run the dev server
+```bash
+npm run dev
+```
+
+### Build for production
+```bash
+npm run build
+```
+
+### Preview the production build
+```bash
+npm run preview
+```
+
+### Lint / format
+```bash
+npm run lint
+npm run format
+```
+
+---
+
+## Contact Form Setup (Supabase + Resend)
+
+The contact form requires two pieces of backend setup before it will actually deliver emails:
+
+### 1. Database table
+Run the SQL in `supabase/migrations/20260830000000_create_contact_messages.sql` against your Supabase project (via the SQL Editor in the Supabase dashboard, or `supabase db push` if using the CLI). This creates the `contact_messages` table with a policy allowing anonymous inserts only.
+
+### 2. Edge Function
+Deploy the function that sends the email notification:
+```bash
+supabase functions deploy send-contact-email
+```
+
+Set your Resend API key as a secret (never hardcode it in the source):
+```bash
+supabase secrets set RESEND_API_KEY=your_resend_api_key_here
+```
+
+The notification email currently sends **to**: `wasiqsulaman91@gmail.com`, and **from**: Resend's shared testing address `onboarding@resend.dev`. For production use, verify your own domain in Resend and update the `from` field in `supabase/functions/send-contact-email/index.ts`.
+
+---
+
+## 3D Hero Background (Spline)
+
+The hero background is a Spline scene embedded via `<iframe>` in `Hero.tsx`, pointing to a public Spline share URL. It fades in once the iframe reports `onLoad`. Note: cross-origin iframes may need explicit permissions for certain browser features (e.g. WebGPU) — this is worth double-checking if the 3D orb doesn't render in some environments.
+
+---
+
+## Notes
+
+- The `types.ts` file under `src/integrations/supabase/` is normally auto-generated by the Supabase CLI (`supabase gen types typescript`), but has been manually extended here to include the `contact_messages` table.
+- This project was originally scaffolded via Lovable, which manages a connected Supabase backend (Lovable Cloud). Direct Supabase dashboard access may depend on how that connection is configured.
