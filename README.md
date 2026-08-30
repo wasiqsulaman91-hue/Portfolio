@@ -1,29 +1,104 @@
-# Welcome to your Lovable project
+# Wasiq's Portfolio
 
-This project was built with [Lovable](https://lovable.dev).
+A personal portfolio website built to showcase my projects, experience, and skills as a Computer Engineering student.
 
-## Build with Lovable
+🔗 **Live site:** _add your deployed URL here_
 
-Open your project in the [Lovable editor](https://lovable.dev) and keep building.
+## Built With
 
-- **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: connect the project to GitHub and every change made in Lovable is committed straight to your repository.
-- **Full ownership**: this code is yours. Push to your repository and your changes sync back into Lovable, ready for your next prompt.
+- **[TanStack Start](https://tanstack.com/start)** — full-stack React framework
+- **[TanStack Router](https://tanstack.com/router)** — type-safe file-based routing
+- **React 19** + **TypeScript**
+- **Tailwind CSS v4**
+- **Radix UI** — accessible headless component primitives
+- **GSAP** — scroll-triggered animations
+- **Supabase** — backend/auth integration
+- **Vite** — dev server & build tool
 
-## Development
+## Sections
 
-Prefer working locally? You need Node.js and npm — [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating).
+- **Hero** — introduction
+- **About** — skills overview
+- **Experience** — work history and certifications
+- **Projects** — a showcase of six builds, including:
+  - Vertex Job Portal
+  - Noodle of Doom (arcade snake game)
+  - Social Network Analyzer
+  - Library Management System
+  - Voice AI Ordering Agent
+  - Code Claw Machine
+- **Contact** — get in touch form
 
-```sh
+## Getting Started
+
+### Prerequisites
+
+- [Node.js](https://nodejs.org/) (LTS recommended) or [Bun](https://bun.sh/)
+
+### Installation
+
+```bash
+# Clone the repository
 git clone <this-repository-url>
-cd <repository-name>
-npm i
+cd Portfolio
+
+# Install dependencies
+bun install
+# or
+npm install
+```
+
+### Environment Variables
+
+Create a `.env` file in the root directory with your Supabase credentials:
+
+```
+SUPABASE_PROJECT_ID=your_project_id
+SUPABASE_PUBLISHABLE_KEY=your_publishable_key
+SUPABASE_URL=your_supabase_url
+VITE_SUPABASE_PROJECT_ID=your_project_id
+VITE_SUPABASE_PUBLISHABLE_KEY=your_publishable_key
+VITE_SUPABASE_URL=your_supabase_url
+```
+
+### Running Locally
+
+```bash
+bun dev
+# or
 npm run dev
 ```
 
-## Built with
+The app will be available at `http://localhost:8080`.
 
-- TanStack Start
-- TypeScript
-- React
-- Tailwind CSS
+### Build for Production
+
+```bash
+bun run build
+# or
+npm run build
+```
+
+## Project Structure
+
+```
+src/
+├── components/       # Page sections (Hero, About, Experience, Projects, Contact, Nav, Footer)
+├── assets/           # Images, PDFs, and other static files
+├── integrations/     # Supabase client & auth setup
+├── lib/              # Utility functions
+├── routes/           # TanStack Router route files
+└── styles.css        # Global styles
+```
+
+## Author
+
+**Wasiq**
+Computer Engineering Student, COMSATS University Islamabad, Lahore Campus
+
+- GitHub: [@wasiqsulaman91-hue](https://github.com/wasiqsulaman91-hue)
+- LinkedIn: [wasiqsulaman](https://www.linkedin.com/in/wasiqsulaman)
+
+## License
+
+This project is open source. Feel free to explore the code, but please don't copy the content/design directly for your own portfolio.
