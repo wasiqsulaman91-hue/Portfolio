@@ -42,6 +42,9 @@ function Index() {
 
     (async () => {
       if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      // Smooth-scroll hijacking fights native touch scrolling on phones/tablets
+      // and causes the stutter, so use it on pointer devices only.
+      if (!window.matchMedia("(min-width: 1024px) and (pointer: fine)").matches) return;
       const mod = await import("locomotive-scroll");
       if (cancelled) return;
       const LocomotiveScroll = mod.default;
