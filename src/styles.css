@@ -184,3 +184,15 @@
   filter: blur(70px);
   pointer-events: none;
 }
+
+/* Mobile performance: huge blur radii and backdrop-filter are the most
+   expensive things to composite while scrolling, so soften them on phones. */
+@media (max-width: 1023px) {
+  .glow-orb {
+    filter: blur(38px);
+  }
+
+  .glass {
+    backdrop-filter: blur(8px) saturate(120%);
+  }
+}
